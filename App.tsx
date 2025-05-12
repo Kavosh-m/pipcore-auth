@@ -1,46 +1,36 @@
 import * as React from 'react';
-import {View, Text} from 'react-native';
-import {createStaticNavigation} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import DashboardPage from './src/screens/Dashboard/dasboard-page';
+import LoginPage from './src/screens/Auth/login-page';
+import {SignInProvider} from './src/state/auth-provider';
+import {SignInContext} from './src/state/auth-context';
 
-function HomeScreen() {
+const Stack = createNativeStackNavigator();
+
+function RootStack() {
+  const {isSignedIn} = React.useContext(SignInContext);
   return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'cyan',
-      }}>
-      <Text>Home Screen</Text>
-    </View>
+    <Stack.Navigator>
+      {isSignedIn ? (
+        <Stack.Screen name="Home" component={DashboardPage} />
+      ) : (
+        <Stack.Screen
+          name="Login"
+          component={LoginPage}
+          options={{headerShown: false}}
+        />
+      )}
+    </Stack.Navigator>
   );
 }
-
-function DetailScreen() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'pink',
-      }}>
-      <Text>Detail Screen</Text>
-    </View>
-  );
-}
-
-const RootStack = createNativeStackNavigator({
-  initialRouteName: 'Home',
-  screens: {
-    Home: HomeScreen,
-    Detail: DetailScreen,
-  },
-});
-
-const Navigation = createStaticNavigation(RootStack);
 
 export default function App() {
-  return <Navigation />;
+  return (
+    <SignInProvider>
+      <NavigationContainer>
+        <RootStack />
+      </NavigationContainer>
+    </SignInProvider>
+  );
 }
