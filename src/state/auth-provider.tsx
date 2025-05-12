@@ -3,7 +3,7 @@ import {SignInContext} from './auth-context';
 import * as React from 'react';
 
 export const SignInProvider = ({children}: {children: React.ReactNode}) => {
-  const [isSignedIn, setIsSignedIn] = React.useState(false);
+  const [isSignedIn, setIsSignedIn] = React.useState<null | boolean>(null);
 
   const signIn = () => {
     setIsSignedIn((mmkvStorage.getString('accessToken') ?? '').length > 1);

@@ -1,6 +1,6 @@
 import {Button} from '@react-navigation/elements';
 import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, ToastAndroid} from 'react-native';
 import {useLogin} from '../../api/api-service';
 import {mmkvStorage} from '../../storage/local';
 import {SignInContext} from '../../state/auth-context';
@@ -15,7 +15,7 @@ export default function LoginPage() {
   var isFieldsEmpty = email.length == 0 || password.length == 0;
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && data?.data) {
       console.log('Login successful:', JSON.stringify(data, null, 2));
       mmkvStorage.set('accessToken', (data as any).data.accessToken);
       signIn();
@@ -23,6 +23,14 @@ export default function LoginPage() {
       console.error('Login failed:', error);
     }
   }, [isSuccess, data]);
+
+  useEffect(() => {
+    console.log('Error:', error);
+
+    if (error) {
+      ToastAndroid.show('Login failed. try again', ToastAndroid.LONG);
+    }
+  }, [error]);
 
   return (
     <View style={styles.container}>

@@ -6,7 +6,7 @@ const loginEndpoint = '/users/login';
 
 export const useLogin = (email: string, password: string) => {
   const [data, setData] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -32,18 +32,20 @@ export const useLogin = (email: string, password: string) => {
       if (!response.ok) {
         // throw new Error('Network response was not ok');
         setIsSuccess(false);
+        setData(null);
+        setError(response);
+      } else {
+        setIsSuccess(true);
+        setError(null);
+
+        const data = await response.json();
+
+        setData(data);
       }
-
-      setIsSuccess(true);
-
-      const data = await response.json();
-
-      setData(data);
     } catch (error: any) {
       setIsLoading(false);
       setError(error);
       setData(null);
-      console.error('Error:', error);
     }
   };
 

@@ -1,8 +1,13 @@
 import * as React from 'react';
-import {mmkvStorage} from '../storage/local';
 
-export const SignInContext = React.createContext({
-  isSignedIn: false,
+type TC = {
+  isSignedIn: null | boolean;
+  signIn: () => void;
+  signOut: () => void;
+};
+
+export const SignInContext = React.createContext<TC>({
+  isSignedIn: null,
   signIn: () => {},
   signOut: () => {},
 });
