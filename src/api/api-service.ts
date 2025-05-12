@@ -4,8 +4,19 @@ const baseURL = 'https://effiscope.space:4011/api';
 
 const loginEndpoint = '/users/login';
 
+export type TRes = {
+  status: number;
+  message: string;
+  success: string;
+  data: {
+    accessToken: string;
+    user: string;
+    isAdmin: boolean;
+  };
+};
+
 export const useLogin = (email: string, password: string) => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<null | TRes>(null);
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);

@@ -17,7 +17,7 @@ export default function LoginPage() {
   useEffect(() => {
     if (isSuccess && data?.data) {
       console.log('Login successful:', JSON.stringify(data, null, 2));
-      mmkvStorage.set('accessToken', (data as any).data.accessToken);
+      mmkvStorage.set('accessToken', data.data.accessToken);
       signIn();
     } else if (error) {
       console.error('Login failed:', error);
